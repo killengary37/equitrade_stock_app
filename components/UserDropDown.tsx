@@ -13,15 +13,17 @@ import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {LogOut} from "lucide-react";
 import NavItems from "@/components/NavItems";
+import {signOut} from "@/lib/actions/auth.actions";
 
-const UserDropDown = () => {
+const UserDropDown = ({user}: {user: User}) => {
     const router = useRouter();
 
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
+        await signOut();
         router.push("/signin");
     }
 
-    const user = { name: 'Gary', email: 'contact@killengary37.com'};
+
 
     return (
         <DropdownMenu>
