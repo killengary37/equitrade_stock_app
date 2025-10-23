@@ -7,6 +7,7 @@ import { cache } from 'react';
 const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1';
 const NEXT_PUBLIC_FINNHUB_API_KEY = process.env.NEXT_PUBLIC_FINNHUB_API_KEY ?? '';
 
+
 async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T> {
     const options: RequestInit & { next?: { revalidate?: number } } = revalidateSeconds
         ? { cache: 'force-cache', next: { revalidate: revalidateSeconds } }
