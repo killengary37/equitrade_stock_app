@@ -32,10 +32,10 @@ export async function getWatchlistSymbolsByEmail(email: string): Promise<string[
 }
 
 export const addToWatchlist = async (symbol: string, company: string) => {
-    try {
-        const session = await getServerSession();
-        if (!session?.user) redirect('/sign-in');
+    const session = await getServerSession();
+    if (!session?.user) redirect('/sign-in');
 
+    try {
         // Check if stock already exists in watchlist
         const existingItem = await Watchlist.findOne({
             userId: session.user.id,
@@ -65,10 +65,10 @@ export const addToWatchlist = async (symbol: string, company: string) => {
 
 // Remove stock from watchlist
 export const removeFromWatchlist = async (symbol: string) => {
-    try {
-        const session = await getServerSession();
-        if (!session?.user) redirect('/sign-in');
+    const session = await getServerSession();
+    if (!session?.user) redirect('/sign-in');
 
+    try {
         // Remove from watchlist
         await Watchlist.deleteOne({
             userId: session.user.id,
@@ -85,10 +85,10 @@ export const removeFromWatchlist = async (symbol: string) => {
 
 // Get user's watchlist
 export const getUserWatchlist = async () => {
-    try {
-        const session = await getServerSession();
-        if (!session?.user) redirect('/sign-in');
+    const session = await getServerSession();
+    if (!session?.user) redirect('/sign-in');
 
+    try {
         const watchlist = await Watchlist.find({ userId: session.user.id })
             .sort({ addedAt: -1 })
             .lean();
@@ -102,10 +102,10 @@ export const getUserWatchlist = async () => {
 
 // Get user's watchlist with stock data
 export const getWatchlistWithData = async () => {
-    try {
-        const session = await getServerSession();
-        if (!session?.user) redirect('/sign-in');
+    const session = await getServerSession();
+    if (!session?.user) redirect('/sign-in');
 
+    try {
         const watchlist = await Watchlist.find({ userId: session.user.id }).sort({ addedAt: -1 }).lean();
 
         if (watchlist.length === 0) return [];
