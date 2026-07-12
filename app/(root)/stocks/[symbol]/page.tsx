@@ -1,5 +1,8 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
 import WatchlistButton from "@/components/WatchlistButton";
+import { WatchlistItem } from '@/database/models/watchlist.model';
+import { getStocksDetails } from '@/lib/actions/finnhub.actions';
+import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import {
     SYMBOL_INFO_WIDGET_CONFIG,
     CANDLE_CHART_WIDGET_CONFIG,
@@ -8,10 +11,20 @@ import {
     COMPANY_PROFILE_WIDGET_CONFIG,
     COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
+import { notFound } from 'next/navigation';
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
     const { symbol } = await params;
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+
+    const stockData = await getStocksDetails(symbol.toUpperCase());
+    const watchlist = await getUserWatchlist();
+
+    const isInWatchlist = watchlist.some(
+        (item: WatchlistItem) => item.symbol === symbol.toUpperCase()
+    );
+
+    if (!stockData) notFound();
 
     return (
         <div className="flex min-h-screen p-4 md:p-6 lg:p-8">
