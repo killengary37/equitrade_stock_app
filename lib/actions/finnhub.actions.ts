@@ -1,7 +1,6 @@
 'use server';
 
-import { auth } from '../better-auth/auth';
-import { headers } from 'next/headers';
+import { getServerSession } from '@/lib/better-auth/session';
 import { redirect } from 'next/navigation';
 import { getWatchlistSymbolsByEmail } from './watchlist.actions';
 import {
@@ -112,9 +111,7 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
 
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
     try {
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
+        const session = await getServerSession();
         if (!session?.user) redirect('/sign-in');
 
         const userWatchlistSymbols = await getWatchlistSymbolsByEmail(
