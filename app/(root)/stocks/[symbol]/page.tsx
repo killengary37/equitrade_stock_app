@@ -17,7 +17,12 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
     const { symbol } = await params;
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
-    const stockData = await getStocksDetails(symbol.toUpperCase());
+    let stockData;
+    try{
+        stockData = await getStocksDetails(symbol.toUpperCase());
+    } catch {
+        notFound();
+    }
     const watchlist = await getUserWatchlist();
 
     const isInWatchlist = watchlist.some(

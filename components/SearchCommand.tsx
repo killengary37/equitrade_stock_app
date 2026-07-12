@@ -57,12 +57,7 @@ export default function SearchCommand({ renderAs = 'button', label = 'Add stock'
 
     // Handle watchlist changes status change
     const handleWatchlistChange = async (symbol: string, isAdded: boolean) => {
-        // Update current stocks
-        setStocks(
-            initialStocks?.map((stock) =>
-                stock.symbol === symbol ? { ...stock, isInWatchlist: isAdded } : stock
-            ) || []
-        );
+      setStocks((prev) => prev.map((stock) => stock.symbol === symbol ? { ...stock, isInWatchlist: isAdded } : stock));
     };
 
     return (
